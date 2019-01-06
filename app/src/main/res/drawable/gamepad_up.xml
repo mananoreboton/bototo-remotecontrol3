@@ -1,0 +1,12 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="@dimen/width_pad_button"
+    android:height="@dimen/height_pad_button"
+    android:viewportWidth="@dimen/viewport_width_pad"
+    android:viewportHeight="@dimen/viewport_height_pad">
+    <group android:name="triangle_group_down">
+        <path
+            android:name="triangle_down"
+            android:fillColor="@color/colorAccent"
+            android:pathData="M 50,0 L 100,50 L 0,50 z" />
+    </group>
+</vector>

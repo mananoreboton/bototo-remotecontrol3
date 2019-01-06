@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/telemetry_board"
+        android:layout_width="0dp"
+        android:layout_height="24dp"
+        android:layout_margin="@dimen/margin_pad_element"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/indicator_speed"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:src="@drawable/speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/content_description_speed" />
+        <TextView
+            android:width="80dp"
+            android:id="@+id/label_speed"
+            app:layout_constraintLeft_toRightOf="@id/indicator_speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="0" />
+
+        <ImageView
+            android:id="@+id/indicator_position"
+            app:layout_constraintLeft_toRightOf="@id/label_speed"
+            android:layout_marginStart="60dp"
+            android:src="@drawable/position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/content_description_position" />
+        <TextView
+            android:width="80dp"
+            android:id="@+id/label_position"
+            app:layout_constraintLeft_toRightOf="@id/indicator_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="0" />
+
+        <ImageView
+            android:id="@+id/indicator_orientation"
+            app:layout_constraintLeft_toRightOf="@id/label_position"
+            android:layout_marginStart="60dp"
+            android:src="@drawable/orientation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/content_description_orientation" />
+        <TextView
+            android:width="80dp"
+            android:id="@+id/label_orientation"
+            app:layout_constraintLeft_toRightOf="@id/indicator_orientation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="0" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/control_board"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_pad_element"
+        app:layout_constraintBottom_toTopOf="@id/settings_board"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/telemetry_board">
+
+        <ImageView
+            android:id="@+id/button_sound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/sound"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/left"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:contentDescription="@string/content_description_button_sound" />
+
+        <ImageView
+            android:id="@+id/button_light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/light"
+            app:layout_constraintLeft_toRightOf="@id/right"
+            app:layout_constraintStart_toEndOf="@+id/right"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:contentDescription="@string/content_description_button_light" />
+        <include
+           app:layout_constraintLeft_toLeftOf="parent"
+           app:layout_constraintRight_toLeftOf="@+id/right"
+           android:id="@+id/left"
+           layout="@layout/controlpad"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content" />
+        <include
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/left"
+            android:id="@+id/right"
+            layout="@layout/controlpad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </android.support.constraint.ConstraintLayout>
+
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/settings_board"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_margin="@dimen/margin_board_element"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/label_connection_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintRight_toLeftOf="@id/button_connect"
+            tools:text="@string/label_click_to_connect"
+            android:text="@string/label_click_to_connect" />
+        <ImageView
+            android:id="@+id/button_connect"
+            android:src="@drawable/connect"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/content_description_button_connect" />
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.constraint.ConstraintLayout>

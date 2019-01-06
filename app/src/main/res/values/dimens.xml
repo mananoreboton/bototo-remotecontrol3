@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="height_pad_button">75dp</dimen>
+    <dimen name="width_pad_button">150dp</dimen>
+    <dimen name="viewport_height_pad">50</dimen>
+    <dimen name="viewport_width_pad">100</dimen>
+    <dimen name="margin_pad_element">8dp</dimen>
+    <dimen name="margin_board_element">8dp</dimen>
+</resources>
