@@ -6,4 +6,5 @@
     <dimen name="viewport_width_pad">100</dimen>
     <dimen name="margin_pad_element">8dp</dimen>
     <dimen name="margin_board_element">8dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>

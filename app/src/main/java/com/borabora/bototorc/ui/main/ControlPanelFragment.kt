@@ -12,15 +12,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.borabora.bototorc.R
+import com.borabora.bototorc.data.Vehicle
 
-class MainFragment : Fragment() {
+class ControlPanelFragment : Fragment() {
 
     private val REQUEST_ENABLE_BT = 22;
     var mBluetoothAdapter: BluetoothAdapter? = null
     var connectionStatusLabel: TextView? = null
 
     companion object {
-        fun newInstance() = MainFragment()
+        fun newInstance() = ControlPanelFragment()
     }
 
     private lateinit var viewModel: MainViewModel
@@ -29,7 +30,7 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(R.layout.main_fragment, container, false)
+        val view = inflater.inflate(R.layout.control_panel_fragment, container, false)
 
         connectionStatusLabel = view.findViewById(R.id.label_connection_status)
 
@@ -73,6 +74,7 @@ class MainFragment : Fragment() {
             val deviceName = device.name
             val deviceHardwareAddress = device.address // MAC address
             println("deviceName = ${deviceName}")
+            viewModel.getBTRemoteVehicles().add(Vehicle(device, device.address, device.name))
         }
     }
 
