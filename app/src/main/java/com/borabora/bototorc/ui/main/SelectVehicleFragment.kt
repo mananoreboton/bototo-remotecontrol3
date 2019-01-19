@@ -40,6 +40,9 @@ class SelectVehicleFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel = activity?.run {
+            ViewModelProviders.of(this).get(MainViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
         val view = inflater.inflate(R.layout.select_vehicle_list, container, false)
 
         // Set the adapter
@@ -53,11 +56,6 @@ class SelectVehicleFragment : Fragment() {
             }
         }
         return view
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
     }
 
     override fun onAttach(context: Context) {

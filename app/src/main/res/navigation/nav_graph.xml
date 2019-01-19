@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph.xml"
+            app:startDestination="@id/controlPanelFragment">
+    <fragment android:id="@+id/controlPanelFragment" android:name="com.borabora.bototorc.ui.main.ControlPanelFragment"
+              android:label="ControlPanelFragment">
+        <action android:id="@+id/action_controlPanelFragment_to_selectVehicleFragment"
+                app:destination="@id/selectVehicleFragment"/>
+    </fragment>
+    <fragment android:id="@+id/selectVehicleFragment"
+              android:name="com.borabora.bototorc.ui.main.SelectVehicleFragment" android:label="select_vehicle_list"
+              tools:layout="@layout/select_vehicle_list"/>
+</navigation>

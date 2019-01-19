@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.navigation.findNavController
 import com.borabora.bototorc.R
 import com.borabora.bototorc.data.Vehicle
 
@@ -39,8 +40,9 @@ class ControlPanelFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        // TODO: Use the ViewModel
+        viewModel = activity?.run {
+            ViewModelProviders.of(this).get(MainViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
 
         connectionStatusLabel?.setOnClickListener { tryEnableBT() }
     }
@@ -76,6 +78,7 @@ class ControlPanelFragment : Fragment() {
             println("deviceName = ${deviceName}")
             viewModel.getBTRemoteVehicles().add(Vehicle(device, device.address, device.name))
         }
+        view?.findNavController()?.navigate(R.id.action_controlPanelFragment_to_selectVehicleFragment)
     }
 
 }
