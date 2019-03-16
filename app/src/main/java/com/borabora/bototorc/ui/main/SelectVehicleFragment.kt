@@ -1,6 +1,7 @@
 package com.borabora.bototorc.ui.main
 
 import android.arch.lifecycle.ViewModelProviders
+import android.bluetooth.BluetoothDevice
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -85,7 +86,7 @@ class SelectVehicleFragment : Fragment() {
      */
     interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onListFragmentInteraction(item: Vehicle?)
+        fun onListFragmentInteraction(item: BluetoothDevice?)
     }
 
     companion object {
