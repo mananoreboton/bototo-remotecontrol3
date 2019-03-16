@@ -41,11 +41,11 @@ class ControlPanelFragment : Fragment() {
     }
 
     private fun tryEnableBT() {
-        viewModel.tryEnableBT(this)
+        viewModel.tryEnableBT(this.context)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        viewModel.onEnableBTResult(requestCode, resultCode, data, this)
+        viewModel.onEnableBTResult(requestCode, resultCode, data)
     }
 
 }

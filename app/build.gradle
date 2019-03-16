@@ -38,4 +38,5 @@ dependencies {
 
     implementation "android.arch.navigation:navigation-fragment-ktx:$nav_version"
     implementation "android.arch.navigation:navigation-ui-ktx:$nav_version"
+    implementation 'com.akexorcist:bluetoothspp:1.0.0'
 }
