@@ -4,10 +4,12 @@
     <string name="content_description_center_pad">left center pad</string>
     <string name="content_description_up_pad">left up pad</string>
     <string name="label_click_to_connect">Click to connect</string>
+    <string name="label_click_to_disconnect">Click to disconnect</string>
     <string name="content_description_button_connect">Button to connect</string>
     <string name="content_description_button_light">light button</string>
     <string name="content_description_button_sound">sound button</string>
     <string name="content_description_orientation">orientation</string>
     <string name="content_description_speed">speed</string>
     <string name="content_description_position">position</string>
+    <string name="info_dialog_title">Info</string>
 </resources>

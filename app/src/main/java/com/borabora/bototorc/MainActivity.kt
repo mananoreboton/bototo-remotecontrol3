@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import com.borabora.bototorc.ui.main.MainViewModel
 import com.borabora.bototorc.ui.main.SelectVehicleFragment
 
+
 class MainActivity : AppCompatActivity(), SelectVehicleFragment.OnListFragmentInteractionListener {
     private lateinit var viewModel: MainViewModel
 
@@ -22,7 +23,22 @@ class MainActivity : AppCompatActivity(), SelectVehicleFragment.OnListFragmentIn
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        viewModel.onEnableBTResult(requestCode, resultCode, data)
+        viewModel.onEnableBTResult(requestCode, resultCode, data, this)
     }
+
+/*fun showDialog(msg: String) {
+        if (alertDialog == null) {
+            alertDialog = AlertDialog.Builder(this@MainActivity).create()
+        } else {
+            alertDialog?.hide()
+        }
+        alertDialog?.setTitle(getString(R.string.info_dialog_title))
+        alertDialog?.setMessage(msg)
+        alertDialog?.setButton(1, msg) { dialog: DialogInterface, which: Int ->
+            alertDialog?.hide()
+        }
+        alertDialog?.show()
+    }*/
+
 
 }

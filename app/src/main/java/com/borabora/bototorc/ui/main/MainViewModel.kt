@@ -1,6 +1,7 @@
 package com.borabora.bototorc.ui.main
 
 import android.app.Activity
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
@@ -16,100 +17,111 @@ val TAG = MainViewModel::class.toString()
 
 class MainViewModel : ViewModel() {
     private val remotesVehicles: MutableList<Vehicle> = mutableListOf()
-    private val REQUEST_ENABLE_BT = 22;
     private lateinit var bt: BluetoothSPP
+    val bluetoothResposeLiveData: MutableLiveData<String> by lazy {
+        MutableLiveData<String>()
+    }
+
+    fun sendBTMessage(msg: String) {
+        if (bt.serviceState == BluetoothState.STATE_CONNECTED) {
+            bt.send("1,1,Arduino has started!;", false)
+        } else {
+            bluetoothResposeLiveData.value = "Error: Disconnected BT"
+        }
+    }
 
     fun getBTRemoteVehicles(): MutableList<Vehicle> {
         return remotesVehicles
     }
 
-/*    fun connectBTRemoteDevice(remoteBluetoothDevice: BluetoothDevice?) {
-        btServiceImpl = BTServiceImpl(Handler(), mBluetoothAdapter)
-        btServiceImpl.connect(remoteBluetoothDevice)
-    }*/
-
     fun tryEnableBT(context: Context?) {
         bt = BluetoothSPP(context)
-        if (bt.isBluetoothAvailable) {
-            if (bt.isBluetoothEnabled) {
-                bt.setupService()
-                bt.startService(BluetoothState.DEVICE_OTHER)
-                setupBT()
-                val intent = Intent(context, DeviceList::class.java)
-                if (context is Activity) {
-                    context.startActivityForResult(intent, BluetoothState.REQUEST_CONNECT_DEVICE)
-                }
-            } else {
-                if (context is Activity) {
-                    val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-                    context.startActivityForResult(enableBtIntent, BluetoothState.REQUEST_ENABLE_BT)
+        if (bt.serviceState != BluetoothState.STATE_CONNECTED) {
+            if (bt.isBluetoothAvailable) {
+                if (bt.isBluetoothEnabled) {
+                    prepareToConnect(context)
+                } else {
+                    if (context is Activity) {
+                        val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+                        context.startActivityForResult(enableBtIntent, BluetoothState.REQUEST_ENABLE_BT)
+                    }
                 }
             }
+        } else {
+            bt.disconnect()
         }
     }
 
-    /*private fun selectBTRemoteDevice(fragment: Fragment?) {
-        val pairedDevices: Set<BluetoothDevice>? = mBluetoothAdapter?.bondedDevices
-        pairedDevices?.forEach { device ->
-            val deviceName = device.name
-            val deviceHardwareAddress = device.address // MAC address
-            println("deviceName = ${deviceName}")
-            this.getBTRemoteVehicles().add(Vehicle(device, device.address, device.name))
-        }
-        fragment?.view?.findNavController()?.navigate(R.id.action_controlPanelFragment_to_selectVehicleFragment)
-    }
-*/
     fun onEnableBTResult(
         requestCode: Int,
         resultCode: Int,
-        data: Intent?
+        data: Intent?,
+        context: Context?
     ) {
         if (requestCode == BluetoothState.REQUEST_CONNECT_DEVICE) {
-            if (resultCode == Activity.RESULT_OK)
+            if (resultCode == Activity.RESULT_OK) {
                 bt.connect(data)
-            bt.send("mensaje de conectado", false)
+                bt.send("mensaje de conectado", false)
+            }
         } else if (requestCode == BluetoothState.REQUEST_ENABLE_BT) {
             if (resultCode == Activity.RESULT_OK) {
-                bt.setupService();
-                bt.startService(BluetoothState.DEVICE_OTHER);
-                setupBT()
-                bt.send("un mensaje desde android", true)
+                prepareToConnect(context)
+                //bt.send("un mensaje desde android", true)
             } else {
-                // Do something if user doesn't choose any device (Pressed back)
+                bluetoothResposeLiveData.value = "Error: Disabled BT"
             }
         }
     }
 
-    private fun setupBT() {
-        bt.setOnDataReceivedListener(onDataReceivedListener)
-        bt.setBluetoothConnectionListener(bluetoothConnectionListener)
-        bt.setBluetoothStateListener(bluetoothStateListener)
+    private fun prepareToConnect(context: Context?) {
+        bt.setupService()
+        bt.startService(BluetoothState.DEVICE_OTHER)
+        setupBT()
+        selectRemoteDevice(context)
     }
 
-    object onDataReceivedListener : BluetoothSPP.OnDataReceivedListener {
+    private fun setupBT() {
+        bt.setOnDataReceivedListener(OnDataReceivedListener(bluetoothResposeLiveData))
+        bt.setBluetoothConnectionListener(bluetoothConnectionListener(bluetoothResposeLiveData))
+        bt.setBluetoothStateListener(bluetoothStateListener(bluetoothResposeLiveData))
+    }
+
+    private fun selectRemoteDevice(context: Context?) {
+        val intent = Intent(context, DeviceList::class.java)
+        if (context is Activity) {
+            context.startActivityForResult(intent, BluetoothState.REQUEST_CONNECT_DEVICE)
+        }
+    }
+
+    class OnDataReceivedListener(val liveData: MutableLiveData<String>) : BluetoothSPP.OnDataReceivedListener {
+
         override fun onDataReceived(data: ByteArray?, message: String?) {
             Log.i(TAG, "onDataReceived" + message)
+            liveData.value = message
         }
-
     }
 
-    object bluetoothStateListener : BluetoothSPP.BluetoothStateListener {
+    class bluetoothStateListener(val liveData: MutableLiveData<String>) : BluetoothSPP.BluetoothStateListener {
         override fun onServiceStateChanged(state: Int) {
             Log.i(TAG, "onServiceStateChanged" + state)
+            liveData.value = "state: " + state
         }
     }
 
-    object bluetoothConnectionListener : BluetoothSPP.BluetoothConnectionListener {
+    class bluetoothConnectionListener(val liveData: MutableLiveData<String>) : BluetoothSPP.BluetoothConnectionListener {
         override fun onDeviceDisconnected() {
-            Log.i(TAG, "onDeviceDisconnected")
+                                                                                                                            Log.i(TAG, "onDeviceDisconnected")
+            liveData.value = "onDeviceDisconnected"
         }
 
         override fun onDeviceConnected(name: String?, address: String?) {
             Log.i(TAG, "onDeviceConnected")
+            liveData.value = "onDeviceConnected " + name
         }
 
         override fun onDeviceConnectionFailed() {
             Log.i(TAG, "onDeviceConnectionFailed")
+            liveData.value = "onDeviceConnectionFailed"
         }
     }
 
