@@ -8,11 +8,10 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.borabora.bototorc.R
-import java.lang.StringBuilder
+import com.borabora.bototorc.ui.basic.ControlpadLayout
 
 class ControlPanelFragment : Fragment() {
 
@@ -20,8 +19,8 @@ class ControlPanelFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var labelConnectionStatus: TextView
-    private lateinit var downPad: ImageView
-    private lateinit var upPad: ImageView
+    private lateinit var leftControlPad: ControlpadLayout
+    private lateinit var rightControlPad: ControlpadLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,8 +29,8 @@ class ControlPanelFragment : Fragment() {
         val view = inflater.inflate(R.layout.control_panel_fragment, container, false)
         connectionStatusLabel = view.findViewById(R.id.label_connection_status)
         labelConnectionStatus = view.findViewById(R.id.label_connection_status)
-        downPad = view.findViewById(R.id.imageview_down_pad)
-        upPad = view.findViewById(R.id.imageview_up_pad)
+        leftControlPad = view.findViewById(R.id.leftControlPad)
+        rightControlPad = view.findViewById(R.id.rightControlPad)
         return view
     }
 
@@ -39,8 +38,12 @@ class ControlPanelFragment : Fragment() {
         connectionStatusLabel?.setOnClickListener {
             tryEnableBT()
         }
-        downPad.setOnClickListener { viewModel.sendBTMessage("down") }
-        upPad.setOnClickListener { viewModel.sendBTMessage("up") }
+
+        leftControlPad.setUpOnClickListener({viewModel.sendBTMessage("1,1,left up;")})
+        leftControlPad.setDownOnClickListener({viewModel.sendBTMessage("1,2,left down;")})
+
+        rightControlPad.setUpOnClickListener({v: View -> viewModel.sendBTMessage("2,1,right up;")})
+        rightControlPad.setDownOnClickListener({v: View -> viewModel.sendBTMessage("2,2,right down;")})
 
         val resposeObserver = Observer<String> { response ->
             if (response?.contains("onDeviceConnected")!!) {
