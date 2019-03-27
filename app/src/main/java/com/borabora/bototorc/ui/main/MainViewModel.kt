@@ -23,10 +23,12 @@ class MainViewModel : ViewModel() {
     }
 
     fun sendBTMessage(msg: String) {
-        if (bt.serviceState == BluetoothState.STATE_CONNECTED) {
-            bt.send(msg, false)
-        } else {
-            bluetoothResposeLiveData.value = "Error: Disconnected BT"
+        if (::bt.isInitialized) {
+            if (bt.serviceState == BluetoothState.STATE_CONNECTED) {
+                bt.send(msg, false)
+            } else {
+                bluetoothResposeLiveData.value = "Error: Disconnected BT"
+            }
         }
     }
 
