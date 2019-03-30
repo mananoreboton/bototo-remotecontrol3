@@ -38,18 +38,14 @@ class ControlPanelFragment : Fragment() {
         connectionStatusLabel?.setOnClickListener {
             tryEnableBT()
         }
-
-        leftControlPad.setUpOnClickListener({viewModel.sendBTMessage("1,1,left up;")})
-        leftControlPad.setDownOnClickListener({viewModel.sendBTMessage("1,2,left down;")})
-
-        rightControlPad.setUpOnClickListener({v: View -> viewModel.sendBTMessage("2,1,right up;")})
-        rightControlPad.setDownOnClickListener({v: View -> viewModel.sendBTMessage("2,2,right down;")})
+        leftControlPad.setViewModel(viewModel, "0,")
+        rightControlPad.setViewModel(viewModel, "1,")
 
         val resposeObserver = Observer<String> { response ->
             if (response?.contains("onDeviceConnected")!!) {
                 labelConnectionStatus.text = getText(R.string.label_click_to_disconnect)
             }
-            if (response?.contains("onDeviceDisconnected")!!) {
+            if (response.contains("onDeviceDisconnected")) {
                 labelConnectionStatus.text = getText(R.string.label_click_to_connect)
             }
             val toast = Toast.makeText(this@ControlPanelFragment.context, StringBuilder(response), Toast.LENGTH_SHORT)
