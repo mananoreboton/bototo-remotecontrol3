@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import com.borabora.bototorc.R
 import com.borabora.bototorc.ui.main.MainViewModel
+import com.borabora.bototorc.util.CommandBuilder
 
 class ControlpadLayout(context: Context, attrs: AttributeSet): LinearLayout(context, attrs) {
     private var viewModel: MainViewModel? = null
@@ -49,7 +50,7 @@ class ControlpadLayout(context: Context, attrs: AttributeSet): LinearLayout(cont
                 }
 
                 val commandMessage = messageLooperHandler.obtainMessage()
-                commandMessage.obj = buildCommand(cmd, arg)
+                commandMessage.obj = CommandBuilder.buildCommand(cmd, arg)
                 messageLooperHandler.sendMessage(commandMessage)
                 return true
             }
@@ -61,10 +62,6 @@ class ControlpadLayout(context: Context, attrs: AttributeSet): LinearLayout(cont
         //val attributes = context.obtainStyledAttributes(attrs, R.styleable.BenefitView)
         //imageView.setImageDrawable(attributes.getDrawable(R.styleable.BenefitView_image))
         //attributes.recycle()
-    }
-
-    private fun buildCommand(cmd: String?, arg: Int): String {
-        return "$cmd,$arg;"
     }
 
     fun setViewModel(mainViewModel: MainViewModel, cmd: String) {

@@ -38,8 +38,8 @@ class ControlPanelFragment : Fragment() {
         connectionStatusLabel?.setOnClickListener {
             tryEnableBT()
         }
-        leftControlPad.setViewModel(viewModel, "0")
-        rightControlPad.setViewModel(viewModel, "1")
+        leftControlPad.setViewModel(viewModel, "1")
+        rightControlPad.setViewModel(viewModel, "0")
 
         val resposeObserver = Observer<String> { response ->
             if (response?.contains("onDeviceConnected")!!) {
