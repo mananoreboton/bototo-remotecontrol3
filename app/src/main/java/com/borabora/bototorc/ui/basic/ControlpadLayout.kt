@@ -1,6 +1,10 @@
 package com.borabora.bototorc.ui.basic
 
 import android.content.Context
+import android.os.Handler
+import android.os.HandlerThread
+import android.os.Looper
+import android.os.Message
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
@@ -24,6 +28,8 @@ class ControlpadLayout(context: Context, attrs: AttributeSet): LinearLayout(cont
         centerPad = findViewById(R.id.imageview_center_pad)
         downPad = findViewById(R.id.imageview_down_pad)
 
+        val messageLooperHandler = MessageLooperHandler(handlerThread.looper)
+
          val listener = object : View.OnTouchListener {
             override fun onTouch(v: View, m: MotionEvent): Boolean {
                 var arg = 9
@@ -41,7 +47,10 @@ class ControlpadLayout(context: Context, attrs: AttributeSet): LinearLayout(cont
                 if (v == downPad) {
                     arg *= -1
                 }
-                viewModel?.sendBTMessage("$cmd$arg;")
+
+                val commandMessage = messageLooperHandler.obtainMessage()
+                commandMessage.obj = buildCommand(cmd, arg)
+                messageLooperHandler.sendMessage(commandMessage)
                 return true
             }
         }
@@ -54,8 +63,28 @@ class ControlpadLayout(context: Context, attrs: AttributeSet): LinearLayout(cont
         //attributes.recycle()
     }
 
+    private fun buildCommand(cmd: String?, arg: Int): String {
+        return "$cmd,$arg;"
+    }
+
     fun setViewModel(mainViewModel: MainViewModel, cmd: String) {
         this.viewModel = mainViewModel
         this.cmd = cmd
+    }
+
+    companion object {
+        val handlerThread: HandlerThread = HandlerThread("Message Looper")
+        init {
+            handlerThread.start()
+        }
+    }
+
+    inner class MessageLooperHandler(looper: Looper): Handler(looper) {
+        override fun handleMessage(message: Message) {
+            if (message.obj is String) {
+                viewModel?.sendBTMessage(message.obj as String)
+            }
+        }
+
     }
 }
