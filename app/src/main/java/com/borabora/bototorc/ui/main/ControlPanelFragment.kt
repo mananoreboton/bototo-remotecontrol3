@@ -40,6 +40,8 @@ class ControlPanelFragment : Fragment() {
         }
         leftControlPad.setViewModel(viewModel, "1")
         rightControlPad.setViewModel(viewModel, "0")
+        rightControlPad.charge = 50
+
 
         val resposeObserver = Observer<String> { response ->
             if (response?.contains("onDeviceConnected")!!) {

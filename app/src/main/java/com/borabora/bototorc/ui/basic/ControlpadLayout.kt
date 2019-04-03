@@ -17,6 +17,7 @@ import com.borabora.bototorc.util.CommandBuilder
 class ControlpadLayout(context: Context, attrs: AttributeSet): LinearLayout(context, attrs) {
     private var viewModel: MainViewModel? = null
     private var cmd: String? = null
+    var charge = 0
 
     private val upPad: ImageView
     private val centerPad: ImageView
@@ -39,10 +40,10 @@ class ControlpadLayout(context: Context, attrs: AttributeSet): LinearLayout(cont
                         arg = 0
                     }
                     MotionEvent.ACTION_DOWN -> {
-                        arg = 3
+                        arg = 150 + charge
                     }
                     MotionEvent.ACTION_MOVE -> {
-                        arg = 3
+                        arg = 150 + charge
                     }
                 }
                 if (v == downPad) {
