@@ -27,7 +27,7 @@ class MainViewModel : ViewModel() {
             if (bt.serviceState == BluetoothState.STATE_CONNECTED) {
                 bt.send(msg, false)
             } else {
-                bluetoothResposeLiveData.value = "Error: Disconnected BT"
+                bluetoothResposeLiveData.postValue("Error: Disconnected BT")
             }
         }
     }

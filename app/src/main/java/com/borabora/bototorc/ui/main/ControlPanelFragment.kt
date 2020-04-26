@@ -8,10 +8,12 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.borabora.bototorc.R
 import com.borabora.bototorc.ui.basic.ControlpadLayout
+import com.borabora.bototorc.util.CommandBuilder
 
 class ControlPanelFragment : Fragment() {
 
@@ -21,6 +23,7 @@ class ControlPanelFragment : Fragment() {
     private lateinit var labelConnectionStatus: TextView
     private lateinit var leftControlPad: ControlpadLayout
     private lateinit var rightControlPad: ControlpadLayout
+    private lateinit var beepButton: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,12 +34,16 @@ class ControlPanelFragment : Fragment() {
         labelConnectionStatus = view.findViewById(R.id.label_connection_status)
         leftControlPad = view.findViewById(R.id.leftControlPad)
         rightControlPad = view.findViewById(R.id.rightControlPad)
+        beepButton = view.findViewById(R.id.button_sound);
         return view
     }
 
     private fun initControls() {
         connectionStatusLabel?.setOnClickListener {
             tryEnableBT()
+        }
+        beepButton.setOnClickListener{
+            viewModel.sendBTMessage(CommandBuilder.buildCommand("3", 0))
         }
         leftControlPad.setViewModel(viewModel, "1")
         rightControlPad.setViewModel(viewModel, "0")
