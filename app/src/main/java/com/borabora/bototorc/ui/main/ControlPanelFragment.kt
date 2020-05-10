@@ -34,7 +34,7 @@ class ControlPanelFragment : Fragment() {
         labelConnectionStatus = view.findViewById(R.id.label_connection_status)
         leftControlPad = view.findViewById(R.id.leftControlPad)
         rightControlPad = view.findViewById(R.id.rightControlPad)
-        beepButton = view.findViewById(R.id.button_sound);
+        beepButton = view.findViewById(R.id.button_sound)
         return view
     }
 
@@ -47,8 +47,6 @@ class ControlPanelFragment : Fragment() {
         }
         leftControlPad.setViewModel(viewModel, "1")
         rightControlPad.setViewModel(viewModel, "0")
-        rightControlPad.charge = 50
-
 
         val resposeObserver = Observer<String> { response ->
             if (response?.contains("onDeviceConnected")!!) {
